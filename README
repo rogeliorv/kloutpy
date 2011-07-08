@@ -35,3 +35,10 @@ Or download the code and use:
   python setup.py install
 
 
+How to contribute a patch:
+  1. Fork Tweepy on github.com
+  2. Create a new branch
+  3. Commit changes to this new branch
+  4. Send a pull request
+
+
