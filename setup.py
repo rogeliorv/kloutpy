@@ -44,24 +44,20 @@ name = "kloutpy"
 
 version = str(kloutpy.__version__)
 
-download_url = "https://bitbucket.org/leliel12/kloutpy/get/%s.tar.gz#egg=%s-%s" % (version,
-                                                                                   name,
-                                                                                   version)
 
 setup(name=name,
       version=version,
       description="Python Klout (http://klout.com/) api",
       author="JBC",
-      author_email="jbc dot develop at gmail dot com",
-      url="https://bitbucket.org/leliel12/kloutpy",
-      download_url=download_url,
+      url="https://github.com/rogeliorv/kloutpy/",
+      download_url='https://github.com/rogeliorv/kloutpy/tarball/master',
       license="LGPL3",
       keywords="klout",
       classifiers=[
                    "Development Status :: 4 - Beta",
                    "Topic :: Utilities",
                    "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
-                   "Natural Language :: Spanish",
+                   "Natural Language :: English",
                    "Operating System :: OS Independent",
                    "Programming Language :: Python :: 2",
                    "Topic :: Internet",

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
 
-# Copyright (C) - 2010 Juan B Cabral <jbc dot develop at gmail dot com>
+# Copyright (C) - 2011 rogeliorv
+# Original version by Juan B Cabral <jbc dot develop at gmail dot com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
@@ -33,18 +34,21 @@ More info:
 # META
 #===============================================================================
 
-__version__ = "0.2"
+__version__ = "0.3"
 __license__ = "GPL3"
-__author__ = "JB <jbc dot develop at gmail dot com>"
+__author__ = "rogeliorv"
 __since__ = "0.1"
-__date__ = "2010-12-27"
+__date__ = "2011-07-07"
 
 
 #===============================================================================
 # IMPORTS
 #===============================================================================
 
-import json
+try:
+    import simplejson as json
+except:
+    import json
 import urllib
 import urllib2
 import string
@@ -61,7 +65,7 @@ ERROR_STATUS = {
     # "200: "OK: Success", IS A GOOD STATUS
     202: "Accepted: Your request was accepted and the user was queued for processing.",
     401: "Not Authorized: either you need to provide authentication credentials, or the credentials provided aren't valid.",
-    403: "Bad Request: your request is invalid, and we'll return an error message that tells you why. This is the status code returned if you've exceeded the rate limit (see below).",
+    403: "Bad Request: your request is invalid, This is the status code returned if you've exceeded the rate limit or if you are over QPS.",
     404: "Not Found: either you're requesting an invalid URI or the resource in question doesn't exist (ex: no such user in our system).",
     500: "Internal Server Error: we did something wrong.",
     502: "Bad Gateway: returned if Klout is down or being upgraded.",
@@ -78,7 +82,7 @@ class KloutError(BaseException):
         super(KloutError, self).__init__()
         self.code = code
         self.msg = msg
-    
+            
     def __str__(self):
         return repr(self)
     
@@ -108,7 +112,7 @@ class Klout(object):
             data = urllib2.urlopen(url).read()
             data = json.loads(data)
         except urllib2.HTTPError as err:
-            msg = ERROR_STATUS.get(err.code, err.message) 
+            msg = err.read() or ERROR_STATUS.get(err.code, err.message)
             raise KloutError(err.code, msg)
         except ValueError:
             msg = "Invalid json data: '%s'" % data
