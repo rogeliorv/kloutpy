@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
 
-# Copyright (C) - 2011 rogeliorv
-# Original version by Juan B Cabral <jbc dot develop at gmail dot com>
+# Copyright (C) - 2011 @rogeliorv
+# Based on work by jbc dot develop at gmail dot com
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
@@ -128,7 +128,15 @@ class Klout(object):
         """This method allows you to retrieve a Klout score"""
         if isinstance(users, (list, tuple)):
             users = ",".join(users)
-        return self._request("klout", users=users)["users"]
+        
+        result = self._request("klout", users=users)
+        if 'users' not in result:
+            error = result.get('body', {}).get('error', 'Users %s not found' % unicode(users))
+            raise KloutError(404, error)
+        
+        return result['users']
+        
+        print "%s %s" % (unicode(result), unicode(users))
     
     def users_show(self, users):
         """This method allows you to retrieve user objects"""
