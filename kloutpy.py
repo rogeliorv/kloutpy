@@ -54,7 +54,7 @@ import urllib2
 import string
 import datetime
 import time
-from util import make_chunks
+from kloutpy_util import make_chunks
 
 
 #===============================================================================

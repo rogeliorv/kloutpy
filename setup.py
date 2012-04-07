@@ -61,7 +61,7 @@ setup(name=name,
                    "Topic :: Internet",
                    "Topic :: Internet :: WWW/HTTP", 
                    ],
-      py_modules = ['kloutpy', 'util'],
+      py_modules = ['kloutpy', 'kloutpy_util'],
 )
 
 
