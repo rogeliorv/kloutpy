@@ -34,8 +34,6 @@ from setuptools import setup
 import kloutpy
 import test
 
-
-
 #==============================================================================
 # SETUP
 #==============================================================================
@@ -48,7 +46,7 @@ version = str(kloutpy.__version__)
 setup(name=name,
       version=version,
       description="Python Klout (http://klout.com/) api",
-      author="JBC",
+      author="rogeliorv",  # Based on version by JBC
       url="https://github.com/rogeliorv/kloutpy/",
       download_url='https://github.com/rogeliorv/kloutpy/tarball/master',
       license="LGPL3",
@@ -63,7 +61,7 @@ setup(name=name,
                    "Topic :: Internet",
                    "Topic :: Internet :: WWW/HTTP", 
                    ],
-      py_modules = ['kloutpy'],
+      py_modules = ['kloutpy', 'util'],
 )
 
 
