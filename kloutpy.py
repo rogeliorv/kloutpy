@@ -52,6 +52,9 @@ except:
 import urllib
 import urllib2
 import string
+import datetime
+import time
+from util import make_chunks
 
 
 #===============================================================================
@@ -95,6 +98,10 @@ class KloutError(BaseException):
 #===============================================================================
 
 class Klout(object):
+    
+    MAX_API_CALLS = 10000
+    KLOUT_MAX_USERS_PER_SCORE_REQUEST = 5
+    NO_INFLUENCE = -1
     
     def __init__(self, api_key):
         """Create a new instance of Klout api
@@ -167,6 +174,56 @@ class Klout(object):
         if isinstance(users, (list, tuple)):
             users = ",".join(users)
         return self._request("soi/influencer_of", users=users)["users"]
+    
+        def get_reset_time_in_seconds(self):
+            return time.time() + self.get_seconds_to_reset()
+    
+    def get_seconds_to_reset(self):
+        '''Klout resets the api calls every day at GMT(UTC). This function
+        returns the number of seconds remaining to the reset time'''
+        now = datetime.datetime.utcnow()
+        today_midnight = datetime.datetime(now.year, now.month, now.day)
+        one_day = datetime.timedelta(1)
+        tomorrow = today_midnight + one_day
+        return (tomorrow - now).total_seconds()
+    
+    def get_users_influence(self, *screen_names):
+        '''This function is aimed to replace the score function, which returns the influence score for 
+        the given users.
+        
+        Score only returns the results for up to five users (since that is the limit of users per request), so
+        we divide the screen_names in chunks of that size and make several requests, yielding them as 
+        they come.
+        
+        The return value from this function is a generator with elements of the form:
+                {u'kscore': float, u'twitter_screen_name': unicode_string}
+                
+        score returns 404 if one or more of the elements you asked for does not exist in their db yet. Instead
+        this function returns NO_INFLUENCE for a user that does not exist yet
+        '''
+        grouped = make_chunks(screen_names, self.KLOUT_MAX_USERS_PER_SCORE_REQUEST)
+        # Klout limits five users per request for the score
+        for group in grouped:
+            try:
+                for result in self.score(group): yield result                
+            except KloutError, e:
+                if e.code != 404: raise e
+                # There is an unexisting user in this group, try individually to find it
+                for user in group: 
+                    try:
+                        yield self.score(user)[0]
+                    except KloutError, e:
+                        print "User %s is not a resource in Klout" % user                        
+                        if e.code == 404: 
+                            yield {u'kscore': self.NO_INFLUENCE, u'twitter_screen_name': user}
+                        else:
+                            raise e
+                        continue
+                continue
+            
+            
+                
+    
         
 
 #===============================================================================
