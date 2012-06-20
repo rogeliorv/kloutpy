@@ -220,8 +220,18 @@ class Klout(object):
                             raise e
                         continue
                 continue
-            
-            
+    
+    @classmethod    
+    def api_client_from_django_settings(cls):
+        '''Utility function for django users'''
+        try:
+            from django.conf import settings
+            return cls(settings.KLOUT_API_KEY)
+        except ImportError:
+            print "Could not find django. Is it installed in your system?"
+        except AttributeError:
+            print "Could not find KLOUT_API_KEY in your settings file."
+        
                 
     
         

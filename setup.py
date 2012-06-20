@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
 
-# Copyright (C) - 2009 Juan B Cabral <jbc dot develop at gmail dot com>
+# Copyright (C) - 2012 @rogeliorv
+# Based on previous work by Juan Cabral
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
@@ -46,7 +47,7 @@ version = str(kloutpy.__version__)
 setup(name=name,
       version=version,
       description="Python Klout (http://klout.com/) api",
-      author="rogeliorv",  # Based on version by JBC
+      author="@rogeliorv",  # Based on earlier work by JBC
       url="https://github.com/rogeliorv/kloutpy/",
       download_url='https://github.com/rogeliorv/kloutpy/tarball/master',
       license="LGPL3",
