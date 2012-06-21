@@ -28,9 +28,6 @@
 # IMPORTS
 #==============================================================================
 
-from ez_setup import use_setuptools
-use_setuptools()
-
 from setuptools import setup
 import kloutpy
 import test
@@ -46,7 +43,7 @@ version = str(kloutpy.__version__)
 
 setup(name=name,
       version=version,
-      description="Python Klout (http://klout.com/) api",
+      description="Python client for the klout api (http://klout.com/)",
       author="@rogeliorv",  # Based on earlier work by JBC
       url="https://github.com/rogeliorv/kloutpy/",
       download_url='https://github.com/rogeliorv/kloutpy/tarball/master',
